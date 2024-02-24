@@ -1,0 +1,67 @@
+/* App.css */
+.roulette-container {
+  text-align: center;
+  margin: 20px auto;
+  overflow: hidden;
+  width: 1000px; /* Defina a largura suficiente para mostrar 3 imagens */
+}
+
+.roulette-wrapper {
+  display: flex;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  background-color: rgb(95, 218, 227);
+  border-radius: 10px;
+}
+
+.roulette-item {
+  flex: 0 0 101px; /* Largura de cada item */
+  margin: 5px 10px; /* Espaçamento entre itens */
+  border: 2px solid rgb(255, 255, 255);
+}
+  
+
+.roulette-item img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.roulette-info {
+    padding: 5px 10px;
+    border-radius: 0 0 4px 4px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    background-color: #1e93d2;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: rgb(95, 218, 227);
+}
+
+
+.selected {
+    border: 2px solid rgb(0, 21, 250);
+}
+
+.selected-info {
+    margin-top: 20px;
+    color: rgb(47, 0, 255);
+    font-weight: bold;
+}
+.roulette-wrapper {
+    scroll-behavior: smooth;
+  }
+  
+  .roulette-item.selected {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
