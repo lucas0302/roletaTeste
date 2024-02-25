@@ -23,42 +23,55 @@ const items = [
 
 ];
 
+const duplicatedItems = [...items, ...items];
+
 const App = () => {
   const rouletteRef = useRef(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
 
   const sortearPessoa = () => {
+    if (isSpinning) return;
+    setIsSpinning(true);
+
     const itemSorteado = items[Math.floor(Math.random() * items.length)];
     setSelectedItem(itemSorteado);
+    // Calcule o índice do item no array duplicado, escolhendo a segunda ocorrência para a animação
+    const itemIndex = items.length + items.indexOf(itemSorteado);
 
-    // Espere um tempo para a roleta "girar" antes de parar no item sorteado
+    const spinTime = 3000; // 3 segundos de rotação
+    const itemWidth = rouletteRef.current.firstChild.offsetWidth;
+    const itemMargin = 10;
+    const scrollToCenter = (itemWidth + itemMargin * 2) * itemIndex + (itemWidth / 2) - (rouletteRef.current.offsetWidth / 2);
+
+    rouletteRef.current.style.transition = 'transform 0s';
+    rouletteRef.current.style.transform = 'translateX(0px)';
+
     setTimeout(() => {
-      const itemWidth = 100 + 20; // Largura do item + margem horizontal
-      const centerPosition = (rouletteRef.current.offsetWidth / 2) - (itemWidth / 2);
-      const scrollToPosition = (itemWidth * items.indexOf(itemSorteado)) - centerPosition;
+      rouletteRef.current.style.transition = `transform ${spinTime}ms ease-out`;
+      rouletteRef.current.style.transform = `translateX(-${scrollToCenter}px)`;
+    }, 0);
 
-      setIsSpinning(true);
-      rouletteRef.current.scrollTo({ left: scrollToPosition, behavior: 'smooth' });
+    setTimeout(() => {
+      // Resetar a posição da roleta de forma imperceptível após a animação
+      rouletteRef.current.style.transition = 'none';
+      rouletteRef.current.style.transform = `translateX(-${(itemWidth + itemMargin * 2) * items.indexOf(itemSorteado) + (itemWidth / 2) - (rouletteRef.current.offsetWidth / 2)}px)`;
 
-      setTimeout(() => {
-        setIsSpinning(false);
-      }, );
-    });
+      setIsSpinning(false);
+    }, spinTime);
   };
 
   return (
     <div className="roulette-container">
       <div ref={rouletteRef} className="roulette-wrapper">
-        {items.map((item) => (
-          <div key={item.id} className={`roulette-item ${selectedItem && selectedItem.id === item.id ? 'selected' : ''}`}>
+        {duplicatedItems.map((item, index) => (
+          <div key={index} className={`roulette-item ${selectedItem && selectedItem.id === item.id ? 'selected' : ''}`}>
             <img src={item.img} alt={item.name} />
             <div className="roulette-info">{item.name}</div>
           </div>
         ))}
       </div>
-      {selectedItem && <div className="selected-info">Pessoa Sorteada: {selectedItem.name}</div>}
-      <br/>
+      <br />
       <button onClick={sortearPessoa} disabled={isSpinning}>Sortear</button>
     </div>
   );
