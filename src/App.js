@@ -43,8 +43,8 @@ const App = () => {
 
       setTimeout(() => {
         setIsSpinning(false);
-      }, 2000);
-    }, 500);
+      }, );
+    });
   };
 
   return (
